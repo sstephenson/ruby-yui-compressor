@@ -4,23 +4,18 @@ require "stringio"
 module YUI
   class Compressor
     class Error < StandardError; end
-    class NoOptionError < Error; end
+    class OptionError   < Error; end
     class RuntimeError  < Error; end
     
     attr_reader :options, :command
     
-    DEFAULT_OPTIONS = {
-      :type       => :js,
-      :charset    => "utf-8",
-      :line_break => nil,
-      :munge      => false,
-      :optimize   => true,
-      :preserve_semicolons => false
-    }
-    
+    def self.default_options
+      { :charset => "utf-8", :line_break => nil }
+    end
+
     def initialize(options = {})
-      @options = DEFAULT_OPTIONS.merge(options)
-      @command = [path_to_java, "-jar", path_to_jar_file, *command_options]
+      @options = self.class.default_options.merge(options)
+      @command = [path_to_java, "-jar", path_to_jar_file, *(command_option_for_type + command_options)]
     end
     
     def compress(stream_or_string)
@@ -49,11 +44,11 @@ module YUI
           if respond_to?(method)
             command_options.concat(send(method, argument))
           else
-            raise NoOptionError, "undefined option #{name.inspect}"
+            raise OptionError, "undefined option #{name.inspect}"
           end
         end
       end
-    
+
       def path_to_java
         options.delete(:java) || "java"
       end
@@ -77,8 +72,8 @@ module YUI
         to_stream.close
       end
       
-      def command_option_for_type(type)
-        ["--type", type.to_s]
+      def command_option_for_type
+        ["--type", self.class.compressor_type.to_s]
       end
 
       def command_option_for_charset(charset)
@@ -89,14 +84,36 @@ module YUI
         line_break ? ["--line-break", line_break.to_s] : []
       end
       
+  end
+  
+  class CssCompressor < Compressor
+    def self.compressor_type
+      "css"
+    end
+  end
+  
+  class JavaScriptCompressor < Compressor
+    def self.compressor_type
+      "js"
+    end
+    
+    def self.default_options
+      super.merge(
+        :munge    => false,
+        :optimize => true,
+        :preserve_semicolons => false
+      )
+    end
+    
+    protected
       def command_option_for_munge(munge)
         munge ? [] : ["--nomunge"]
       end
-      
+    
       def command_option_for_optimize(optimize)
         optimize ? [] : ["--disable-optimizations"]
       end
-      
+    
       def command_option_for_preserve_semicolons(preserve_semicolons)
         preserve_semicolons ? ["--preserve-semi"] : []
       end
