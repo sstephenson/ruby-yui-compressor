@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "yui-compressor"
-  s.version = "0.9.0"
+  s.version = "0.9.1"
   s.date = "2009-07-20"
   s.summary = "JavaScript and CSS minification library"
   s.email = "sstephenson@gmail.com"
@@ -10,5 +10,5 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.authors = ["Sam Stephenson"]
   s.files = Dir["Rakefile", "lib/**/*", "test/**/*", "vendor/**/*"]
-  s.test_files = Dir["test/test_*.rb"] unless $SAFE > 0
+  s.test_files = Dir["test/*_test.rb"] unless $SAFE > 0
 end

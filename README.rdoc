@@ -2,7 +2,7 @@
 
 Ruby-YUI Compressor provides a Ruby interface to the {YUI Compressor Java library}[http://developer.yahoo.com/yui/compressor/] for minifying JavaScript and CSS assets.
 
-<b>Latest version:</b> 0.9.0 (includes YUI Compressor 2.4.2)
+<b>Latest version:</b> 0.9.1 (includes YUI Compressor 2.4.2)
 
 * {API documentation}[http://yui.rubyforge.org/]
 * {Source code}[http://github.com/sstephenson/ruby-yui-compressor/]
@@ -21,7 +21,7 @@ Ruby-YUI Compressor is distributed as a Ruby Gem (<tt>yui-compressor</tt>). Beca
 
 You can also install Ruby-YUI Compressor with the {Rip package manager}[http://hellorip.com/]:
 
-  $ rip install git://github.com/sstephenson/ruby-yui-compressor.git
+  $ rip install git://github.com/sstephenson/ruby-yui-compressor.git 0.9.1
   $ irb -rrip
   >> require "yui/compressor"
   => true
