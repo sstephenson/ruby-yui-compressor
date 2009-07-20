@@ -77,12 +77,13 @@ module YUI #:nodoc:
     private
       def command_options
         options.inject([]) do |command_options, (name, argument)|
-          method = "command_option_for_#{name}"
-          if private_methods.include?(method)
-            command_options.concat(send(method, argument))
-          else
+          method = begin
+            method(:"command_option_for_#{name}")
+          rescue NameError
             raise OptionError, "undefined option #{name.inspect}"
           end
+
+          command_options.concat(method.call(argument))
         end
       end
 
