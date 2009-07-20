@@ -5,9 +5,9 @@ module YUI
   class Compressor
     class Error < StandardError; end
     class NoOptionError < Error; end
-    class RuntimeError < Error;  end
+    class RuntimeError  < Error; end
     
-    attr_reader :options
+    attr_reader :options, :command
     
     DEFAULT_OPTIONS = {
       :type       => :js,
@@ -20,17 +20,15 @@ module YUI
     
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
+      @command = [path_to_java, "-jar", path_to_jar_file, *command_options]
     end
     
     def compress(stream_or_string)
       streamify(stream_or_string) do |stream|
         Open3.popen3(*command) do |stdin, stdout, stderr|
           begin
-            while buffer = stream.read(4096)
-              stdin.write(buffer)
-            end
-            stdin.close
-          
+            transfer(stream, stdin)
+            
             if block_given?
               yield stdout
             else
@@ -45,22 +43,6 @@ module YUI
     end
     
     protected
-      def streamify(stream_or_string)
-        if stream_or_string.respond_to?(:read)
-          yield stream_or_string
-        else
-          yield StringIO.new(stream_or_string.to_s)
-        end
-      end
-      
-      def command
-        @command ||= ["java", "-jar", jar_file, *command_options]
-      end
-      
-      def jar_file
-        File.join(File.dirname(__FILE__), *%w".. .. vendor yuicompressor-2.4.2.jar")
-      end
-
       def command_options
         options.inject([]) do |command_options, (name, argument)|
           method = "command_option_for_#{name}"
@@ -70,6 +52,29 @@ module YUI
             raise NoOptionError, "undefined option #{name.inspect}"
           end
         end
+      end
+    
+      def path_to_java
+        options.delete(:java) || "java"
+      end
+
+      def path_to_jar_file
+        options.delete(:jar_file) || File.join(File.dirname(__FILE__), *%w".. .. vendor yuicompressor-2.4.2.jar")
+      end
+
+      def streamify(stream_or_string)
+        if stream_or_string.respond_to?(:read)
+          yield stream_or_string
+        else
+          yield StringIO.new(stream_or_string.to_s)
+        end
+      end
+      
+      def transfer(from_stream, to_stream)
+        while buffer = from_stream.read(4096)
+          to_stream.write(buffer)
+        end
+        to_stream.close
       end
       
       def command_option_for_type(type)
