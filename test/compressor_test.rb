@@ -30,6 +30,12 @@ module YUI
       })("hello");
     END_JS
     
+    def test_compressor_should_raise_when_instantiated
+      assert_raises YUI::Compressor::Error do
+        YUI::Compressor.new
+      end
+    end
+    
     def test_css_should_be_compressed
       @compressor = YUI::CssCompressor.new
       assert_equal "div.warning{display:none;}div.error{background:red;color:white;}", @compressor.compress(FIXTURE_CSS)

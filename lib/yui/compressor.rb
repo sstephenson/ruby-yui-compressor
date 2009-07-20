@@ -13,6 +13,10 @@ module YUI
       { :charset => "utf-8", :line_break => nil }
     end
 
+    def self.compressor_type
+      raise Error, "create a CssCompressor or JavaScriptCompressor instead"
+    end
+
     def initialize(options = {})
       @options = self.class.default_options.merge(options)
       @command = [path_to_java, "-jar", path_to_jar_file, *(command_option_for_type + command_options)]
