@@ -1,6 +1,7 @@
 require "rubygems"
-require "rake/testtask"
+require "rake/gempackagetask"
 require "rake/rdoctask"
+require "rake/testtask"
 
 task :default => :test
 
@@ -12,4 +13,9 @@ end
 
 Rake::RDocTask.new do |t|
   t.rdoc_files.include("README.rdoc", "lib/**/*.rb")
+end
+
+Rake::GemPackageTask.new(eval(IO.read(File.join(File.dirname(__FILE__), "yui-compressor.gemspec")))) do |pkg|
+  pkg.need_zip = true
+  pkg.need_tar = true
 end

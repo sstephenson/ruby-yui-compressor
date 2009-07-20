@@ -1,7 +1,7 @@
 require "open3"
 require "stringio"
 
-module YUI
+module YUI #:nodoc:
   class Compressor
     class Error < StandardError; end
     class OptionError   < Error; end

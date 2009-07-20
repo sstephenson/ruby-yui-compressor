@@ -1,12 +1,19 @@
-= YUI::Compressor
+= Ruby-YUI Compressor
 
-YUI::Compressor provides a Ruby interface to the YUI Compressor for 
-minifying JavaScript and CSS assets.
+Ruby-YUI Compressor provides a Ruby interface to the {YUI Compressor Java library}[http://developer.yahoo.com/yui/compressor/] for minifying JavaScript and CSS assets.
 
-Create either a YUI::CssCompressor or a YUI::JavaScriptCompressor
-depending on what you're compressing. Then pass an IO or string to the
-YUI::Compressor#compress method and get the compressed contents back as
-a string or have them yielded to a block.
+=== Installing and loading Ruby-YUI Compressor
+
+Ruby-YUI Compressor is distributed as a Ruby Gem (<tt>yui-compressor</tt>). Because YUI Compressor's .jar file is included in the box, Java >= 1.4 is its only dependency.
+
+  $ sudo gem install -r yui-compressor
+  $ irb -rubygems
+  >> require "yui/compressor"
+  => true
+
+=== Using Ruby-YUI Compressor
+
+Create either a YUI::CssCompressor or a YUI::JavaScriptCompressor. Then pass an IO or string to the YUI::Compressor#compress method and get the compressed contents back as a string or have them yielded to a block.
 
 ==== Example: Compress JavaScript
   compressor = YUI::JavaScriptCompressor.new
@@ -32,9 +39,7 @@ a string or have them yielded to a block.
 
 ==== Overriding the path to Java or the YUI Compressor .jar file
 
-By default, YUI::Compressor looks for Java as the +java+ command in your
-path, and uses the YUI Compressor .jar file in YUI::Compressor's vendor 
-directory. You can override both with the :java and :jar_file options:
+By default, YUI::Compressor looks for Java as the +java+ command in your path, and uses the YUI Compressor .jar file in YUI::Compressor's vendor directory. You can override both with the :java and :jar_file options:
 
   YUI::JavaScriptCompressor.new(
     :java     => "/usr/bin/java",
@@ -43,13 +48,12 @@ directory. You can override both with the :java and :jar_file options:
 
 ==== Additional compression options
 
-See YUI::CssCompressor and YUI::JavaScriptCompressor for more information
-on format-specific compression options.
+See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more information on format-specific compression options.
 
 
 == Licenses
 
-==== YUI::Compressor Ruby code and documentation (MIT license)
+==== Ruby-YUI Compressor code and documentation (MIT license)
 
   Copyright (c) 2009 Sam Stephenson
   
