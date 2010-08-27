@@ -57,7 +57,7 @@ module YUI #:nodoc:
     #
     def compress(stream_or_string)
       streamify(stream_or_string) do |stream|
-        Open3.popen3(*command) do |stdin, stdout, stderr|
+        Open3.popen2(*command) do |stdin, stdout|
           begin
             transfer(stream, stdin)
             
