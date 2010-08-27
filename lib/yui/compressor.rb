@@ -59,6 +59,7 @@ module YUI #:nodoc:
       streamify(stream_or_string) do |stream|
         Open3.popen2(*command) do |stdin, stdout|
           begin
+            stdin.binmode
             transfer(stream, stdin)
             
             if block_given?
