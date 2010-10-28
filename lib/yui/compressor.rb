@@ -1,3 +1,12 @@
+if ENV['OS'] == 'Windows_NT'
+  begin
+    require "win32/open3"
+  rescue Exception => e
+    raise Error, "You need the win32/open3 gem to use Ruby YUI Compreessor in a Windows environment. #{e}"
+  end
+else
+  require "open3"
+end
 require "open3"
 require "stringio"
 
