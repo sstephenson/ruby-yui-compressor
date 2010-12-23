@@ -12,6 +12,10 @@ module YUI
         background: red;
         color: white;
       }
+
+      @media screen and (max-device-width: 640px) {
+        body { font-size: 90%; }
+      }
     END_CSS
 
     FIXTURE_JS = <<-END_JS
@@ -38,7 +42,7 @@ module YUI
     
     def test_css_should_be_compressed
       @compressor = YUI::CssCompressor.new
-      assert_equal "div.warning{display:none}div.error{background:red;color:white}", @compressor.compress(FIXTURE_CSS)
+      assert_equal "div.warning{display:none}div.error{background:red;color:white}@media screen and (max-device-width:640px){body{font-size:90%}}", @compressor.compress(FIXTURE_CSS)
     end
     
     def test_js_should_be_compressed
@@ -55,20 +59,21 @@ module YUI
 
     def test_compress_should_accept_an_io_argument
       @compressor = YUI::CssCompressor.new
-      assert_equal "div.warning{display:none}div.error{background:red;color:white}", @compressor.compress(StringIO.new(FIXTURE_CSS))
+      assert_equal "div.warning{display:none}div.error{background:red;color:white}@media screen and (max-device-width:640px){body{font-size:90%}}", @compressor.compress(StringIO.new(FIXTURE_CSS))
     end
     
     def test_compress_should_accept_a_block_and_yield_an_io
       @compressor = YUI::CssCompressor.new
       @compressor.compress(FIXTURE_CSS) do |stream|
         assert_kind_of IO, stream
-        assert_equal "div.warning{display:none}div.error{background:red;color:white}", stream.read
+        assert_equal "div.warning{display:none}div.error{background:red;color:white}@media screen and (max-device-width:640px){body{font-size:90%}}", stream.read
       end
     end
     
     def test_line_break_option_should_insert_line_breaks_in_css
       @compressor = YUI::CssCompressor.new(:line_break => 0)
-      assert_equal "div.warning{display:none}\ndiv.error{background:red;color:white}", @compressor.compress(FIXTURE_CSS)
+      assert_equal "div.warning{display:none}\ndiv.error{background:red;color:white}\n@media screen and (max-device-width:640px){body{font-size:90%}\n}", @compressor.compress(FIXTURE_CSS)
+    
     end
     
     def test_line_break_option_should_insert_line_breaks_in_js
