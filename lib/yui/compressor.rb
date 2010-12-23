@@ -92,7 +92,7 @@ module YUI #:nodoc:
       end
 
       def path_to_jar_file
-        options.delete(:jar_file) || File.join(File.dirname(__FILE__), *%w".. yuicompressor-2.4.2.jar")
+        options.delete(:jar_file) || File.join(File.dirname(__FILE__), *%w".. yuicompressor-2.4.4.jar")
       end
 
       def streamify(stream_or_string)
