@@ -2,13 +2,13 @@
 
 Ruby-YUI Compressor provides a Ruby interface to the {YUI Compressor Java library}[http://developer.yahoo.com/yui/compressor/] for minifying JavaScript and CSS assets.
 
-<b>Latest version:</b> 0.9.2 (includes YUI Compressor 2.4.2)
+<b>Latest version:</b> 0.9.3 (includes YUI Compressor 2.4.4)
 
 * {API documentation}[http://yui.rubyforge.org/]
 * {Source code}[http://github.com/sstephenson/ruby-yui-compressor/]
 * {Bug tracker}[http://github.com/sstephenson/ruby-yui-compressor/issues]
 
-Tested on Mac OS X Ruby 1.8.7 and Ruby 1.9.1.
+Tested on Mac OS X Ruby 1.8.7 and Ruby 1.9.2.
 
 === Installing and loading Ruby-YUI Compressor
 
@@ -21,7 +21,7 @@ Ruby-YUI Compressor is distributed as a Ruby Gem (<tt>yui-compressor</tt>). Beca
 
 You can also install Ruby-YUI Compressor with the {Rip package manager}[http://hellorip.com/]:
 
-  $ rip install git://github.com/sstephenson/ruby-yui-compressor.git 0.9.2
+  $ rip install git://github.com/sstephenson/ruby-yui-compressor.git 0.9.3
   $ irb -rrip
   >> require "yui/compressor"
   => true
@@ -71,7 +71,7 @@ See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more 
 ==== Ruby-YUI Compressor code and documentation (MIT license)
 
   Copyright (c) 2009 Sam Stephenson
-  
+
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
   "Software"), to deal in the Software without restriction, including
@@ -79,10 +79,10 @@ See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more 
   distribute, sublicense, and/or sell copies of the Software, and to
   permit persons to whom the Software is furnished to do so, subject to
   the following conditions:
-  
+
   The above copyright notice and this permission notice shall be
   included in all copies or substantial portions of the Software.
-  
+
   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -92,28 +92,28 @@ See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more 
   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ==== YUI Compressor (BSD license)
-  
+
   Copyright (c) 2009, Yahoo! Inc.
   All rights reserved.
-  
+
   Redistribution and use of this software in source and binary forms,
   with or without modification, are permitted provided that the following
   conditions are met:
-  
+
   * Redistributions of source code must retain the above
     copyright notice, this list of conditions and the
     following disclaimer.
-  
+
   * Redistributions in binary form must reproduce the above
     copyright notice, this list of conditions and the
     following disclaimer in the documentation and/or other
     materials provided with the distribution.
-  
+
   * Neither the name of Yahoo! Inc. nor the names of its
     contributors may be used to endorse or promote products
     derived from this software without specific prior
     written permission of Yahoo! Inc.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -124,24 +124,24 @@ See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more 
   CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-  
+
   This software also requires access to software from the following sources:
-  
+
   The Jarg Library v 1.0 ( http://jargs.sourceforge.net/ ) is available
   under a BSD License. Copyright (c) 2001-2003 Steve Purcell,
   Copyright (c) 2002 Vidar Holen, Copyright (c) 2002 Michal Ceresna and
   Copyright (c) 2005 Ewan Mellor.
-  
+
   The Rhino Library ( http://www.mozilla.org/rhino/ ) is dually available
   under an MPL 1.1/GPL 2.0 license, with portions subject to a BSD license.
-  
+
   Additionally, this software contains modified versions of the following
   component files from the Rhino Library:
-  
+
   [org/mozilla/javascript/Decompiler.java]
   [org/mozilla/javascript/Parser.java]
   [org/mozilla/javascript/Token.java]
   [org/mozilla/javascript/TokenStream.java]
-  
+
   The modified versions of these files are distributed under the MPL v 1.1
   ( http://www.mozilla.org/MPL/MPL-1.1.html )
