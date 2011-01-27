@@ -62,6 +62,7 @@ module YUI #:nodoc:
         Open3.popen3(*command) do |stdin, stdout, stderr|
           begin
             transfer(stream, stdin)
+            stdin.binmode
 
             if block_given?
               yield stdout
