@@ -70,7 +70,7 @@ See the YUI::CssCompressor and YUI::JavaScriptCompressor documentation for more 
 
 ==== Ruby-YUI Compressor code and documentation (MIT license)
 
-  Copyright (c) 2009 Sam Stephenson
+  Copyright (c) 2011 Sam Stephenson
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the
