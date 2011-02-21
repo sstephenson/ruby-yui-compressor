@@ -58,7 +58,7 @@ By default, YUI::Compressor looks for Java as the +java+ command in your path, a
 
   YUI::JavaScriptCompressor.new(
     :java     => "/usr/bin/java",
-    :jar_file => "/path/to/my/yuicompressor-2.4.2.jar"
+    :jar_file => "/path/to/my/yuicompressor-2.4.4.jar"
   )
 
 ==== Additional compression options
