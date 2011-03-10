@@ -21,7 +21,9 @@ module YUI #:nodoc:
 
     def initialize(options = {}) #:nodoc:
       @options = self.class.default_options.merge(options)
-      @command = [path_to_java, "-jar", path_to_jar_file, *(command_option_for_type + command_options)]
+      @command = [path_to_java]
+      @command << java_opts unless java_opts.empty?
+      @command += ["-jar", path_to_jar_file, *(command_option_for_type + command_options)]
     end
 
     # Compress a stream or string of code with YUI Compressor. (A stream is
@@ -92,6 +94,10 @@ module YUI #:nodoc:
 
       def path_to_java
         options.delete(:java) || "java"
+      end
+
+      def java_opts
+        options.delete(:java_opts) || ""
       end
 
       def path_to_jar_file
