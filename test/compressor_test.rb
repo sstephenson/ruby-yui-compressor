@@ -33,6 +33,8 @@ module YUI
         }
       })("hello");
     END_JS
+
+    FIXTURE_ERROR_JS = "var x = {class: 'name'};"
     
     def test_compressor_should_raise_when_instantiated
       assert_raises YUI::Compressor::Error do
@@ -94,6 +96,13 @@ module YUI
     def test_preserve_semicolons_option_should_preserve_semicolons
       @compressor = YUI::JavaScriptCompressor.new(:preserve_semicolons => true)
       assert_equal "var Foo={a:1};Foo.bar=(function(baz){if(false){doSomething();}else{for(var index=0;index<baz.length;index++){doSomething(baz[index]);}}})(\"hello\");", @compressor.compress(FIXTURE_JS)
+    end
+
+    def test_compress_should_raise_on_javascript_syntax_error
+      @compressor = YUI::JavaScriptCompressor.new
+      assert_raise YUI::Compressor::RuntimeError do
+        @compressor.compress(FIXTURE_ERROR_JS)
+      end
     end
   end
 end

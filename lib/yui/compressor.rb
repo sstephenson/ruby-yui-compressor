@@ -5,6 +5,8 @@ module YUI #:nodoc:
   class Compressor
     VERSION = "0.9.4"
 
+    YUI_ERROR_MARKER = '[ERROR]'
+
     class Error < StandardError; end
     class OptionError   < Error; end
     class RuntimeError  < Error; end
@@ -63,6 +65,8 @@ module YUI #:nodoc:
           begin
             stdin.binmode
             transfer(stream, stdin)
+
+            raise if stderr.read.include?(YUI_ERROR_MARKER)
 
             if block_given?
               yield stdout
