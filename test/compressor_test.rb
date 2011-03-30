@@ -51,7 +51,14 @@ module YUI
       @compressor = YUI::JavaScriptCompressor.new
       assert_equal "var Foo={a:1};Foo.bar=(function(baz){if(false){doSomething()}else{for(var index=0;index<baz.length;index++){doSomething(baz[index])}}})(\"hello\");", @compressor.compress(FIXTURE_JS)
     end
-        
+
+    def test_large_js_should_be_compressed
+      assert_nothing_raised do
+        @compressor = YUI::JavaScriptCompressor.new
+        @compressor.compress(FIXTURE_JS * 200)
+      end
+    end
+                
     def test_compress_should_raise_when_an_unknown_option_is_specified
       assert_raises YUI::Compressor::OptionError do
         @compressor = YUI::CssCompressor.new(:foo => "bar")
@@ -74,8 +81,7 @@ module YUI
     
     def test_line_break_option_should_insert_line_breaks_in_css
       @compressor = YUI::CssCompressor.new(:line_break => 0)
-      assert_equal "div.warning{display:none}\ndiv.error{background:red;color:white}\n@media screen and (max-device-width:640px){body{font-size:90%}\n}", @compressor.compress(FIXTURE_CSS)
-    
+      assert_equal "div.warning{display:none}\ndiv.error{background:red;color:white}\n@media screen and (max-device-width:640px){body{font-size:90%}\n}", @compressor.compress(FIXTURE_CSS)    
     end
     
     def test_line_break_option_should_insert_line_breaks_in_js
