@@ -3,9 +3,7 @@ require "stringio"
 
 module YUI #:nodoc:
   class Compressor
-    VERSION = "0.9.5"
-
-    YUI_ERROR_MARKER = '[ERROR]'
+    VERSION = "0.9.6"
 
     class Error < StandardError; end
     class OptionError   < Error; end
@@ -65,8 +63,6 @@ module YUI #:nodoc:
           begin
             stdin.binmode
             transfer(stream, stdin)
-
-            raise if stderr.read.include?(YUI_ERROR_MARKER)
 
             if block_given?
               yield stdout
