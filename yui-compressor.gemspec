@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "yui-compressor"
   s.version = "0.9.6"
-  s.date = "2011-03-29"
+  s.date = "2011-03-30"
   s.summary = "JavaScript and CSS minification library"
   s.email = "sstephenson@gmail.com"
   s.description = "A Ruby interface to YUI Compressor for minifying JavaScript and CSS assets."
