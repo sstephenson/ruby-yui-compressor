@@ -1,4 +1,5 @@
-require "open3"
+require "popen4"
+require "shellwords"
 require "stringio"
 
 module YUI #:nodoc:
@@ -9,7 +10,7 @@ module YUI #:nodoc:
     class OptionError   < Error; end
     class RuntimeError  < Error; end
 
-    attr_reader :options, :command
+    attr_reader :options
 
     def self.default_options #:nodoc:
       { :charset => "utf-8", :line_break => nil }
@@ -22,6 +23,10 @@ module YUI #:nodoc:
     def initialize(options = {}) #:nodoc:
       @options = self.class.default_options.merge(options)
       @command = [path_to_java, "-jar", path_to_jar_file, *(command_option_for_type + command_options)]
+    end
+
+    def command #:nodoc:
+      @command.map { |word| Shellwords.escape(word) }.join(" ")
     end
 
     # Compress a stream or string of code with YUI Compressor. (A stream is
@@ -59,7 +64,8 @@ module YUI #:nodoc:
     #
     def compress(stream_or_string)
       streamify(stream_or_string) do |stream|
-        Open3.popen3(*command) do |stdin, stdout, stderr|
+        output = true
+        status = POpen4.popen4(command, "b") do |stdout, stderr, stdin, pid|
           begin
             stdin.binmode
             transfer(stream, stdin)
@@ -67,12 +73,18 @@ module YUI #:nodoc:
             if block_given?
               yield stdout
             else
-              stdout.read
+              output = stdout.read
             end
 
           rescue Exception => e
             raise RuntimeError, "compression failed"
           end
+        end
+
+        if status.exitstatus.zero?
+          output
+        else
+          raise RuntimeError, "compression failed"
         end
       end
     end
@@ -110,6 +122,7 @@ module YUI #:nodoc:
         while buffer = from_stream.read(4096)
           to_stream.write(buffer)
         end
+        from_stream.close
         to_stream.close
       end
 
