@@ -111,14 +111,6 @@ module YUI #:nodoc:
         end
       end
 
-      def transfer(from_stream, to_stream)
-        while buffer = from_stream.read(4096)
-          to_stream.write(buffer)
-        end
-        from_stream.close
-        to_stream.close
-      end
-
       def command_option_for_type
         ["--type", self.class.compressor_type.to_s]
       end
