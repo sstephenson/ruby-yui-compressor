@@ -11,5 +11,4 @@ Gem::Specification.new do |s|
   s.authors = ["Sam Stephenson"]
   s.files = Dir["Rakefile", "lib/**/*", "test/**/*"]
   s.test_files = Dir["test/*_test.rb"] unless $SAFE > 0
-  s.add_dependency "POpen4", ">= 0.1.4"
 end

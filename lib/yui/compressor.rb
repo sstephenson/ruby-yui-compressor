@@ -1,6 +1,6 @@
-require "popen4"
 require "shellwords"
 require "stringio"
+require "tempfile"
 
 module YUI #:nodoc:
   class Compressor
@@ -64,24 +64,17 @@ module YUI #:nodoc:
     #
     def compress(stream_or_string)
       streamify(stream_or_string) do |stream|
-        output = true
-        status = POpen4.popen4(command, "b") do |stdout, stderr, stdin, pid|
-          begin
-            stdin.binmode
-            transfer(stream, stdin)
+        tempfile = Tempfile.new('yui_compress')
+        tempfile.write stream.read
+        tempfile.close
 
-            if block_given?
-              yield stdout
-            else
-              output = stdout.read
-            end
-
-          rescue Exception => e
-            raise RuntimeError, "compression failed"
-          end
+        begin
+          output = `#{command} #{tempfile.path}`
+        rescue Exception
+          raise RuntimeError, "compression failed"
         end
 
-        if status.exitstatus.zero?
+        if $?.exitstatus.zero?
           output
         else
           raise RuntimeError, "compression failed"
