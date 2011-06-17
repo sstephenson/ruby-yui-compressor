@@ -66,12 +66,14 @@ module YUI #:nodoc:
       streamify(stream_or_string) do |stream|
         tempfile = Tempfile.new('yui_compress')
         tempfile.write stream.read
-        tempfile.close
+        tempfile.flush
 
         begin
           output = `#{command} #{tempfile.path}`
         rescue Exception
           raise RuntimeError, "compression failed"
+        ensure
+          tempfile.close!
         end
 
         if $?.exitstatus.zero?
