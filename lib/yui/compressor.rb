@@ -81,7 +81,7 @@ module YUI #:nodoc:
           end
         end
 
-        if status.exitstatus.zero?
+        if status && status.exitstatus.zero?
           output
         else
           raise RuntimeError, "compression failed"
