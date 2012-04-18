@@ -7,7 +7,6 @@ Gem::Specification.new do |s|
   s.description = "A Ruby interface to YUI Compressor for minifying JavaScript and CSS assets."
   s.homepage = "http://github.com/sstephenson/ruby-yui-compressor/"
   s.rubyforge_project = "yui"
-  s.has_rdoc = true
   s.authors = ["Sam Stephenson"]
   s.files = Dir["Rakefile", "lib/**/*", "test/**/*"]
   s.test_files = Dir["test/*_test.rb"] unless $SAFE > 0
