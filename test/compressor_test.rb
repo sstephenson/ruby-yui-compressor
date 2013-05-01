@@ -36,6 +36,21 @@ module YUI
 
     FIXTURE_ERROR_JS = "var x = {class: 'name'};"
 
+    def test_js_java_opts_one_opt
+      @compressor = YUI::JavaScriptCompressor.new(:java_opts => "-Xms64M")
+      assert_match(/^java -Xms64M/, @compressor.command)
+    end
+
+    def test_css_java_opts_two_opts
+      @compressor = YUI::CssCompressor.new(:java_opts => "-Xms64M -Xmx64M")
+      assert_match(/^java -Xms64M -Xmx64M/, @compressor.command)
+    end
+
+    def test_js_java_opts_no_opts
+      @compressor = YUI::JavaScriptCompressor.new()
+      assert_match(/^java -jar/, @compressor.command)
+    end
+
     def test_compressor_should_raise_when_instantiated
       assert_raises YUI::Compressor::Error do
         YUI::Compressor.new

@@ -22,7 +22,12 @@ module YUI #:nodoc:
 
     def initialize(options = {}) #:nodoc:
       @options = self.class.default_options.merge(options)
-      @command = [path_to_java, "-jar", path_to_jar_file, *(command_option_for_type + command_options)]
+      @command = [path_to_java]
+      @command.push(*java_opts)
+      @command.push("-jar")
+      @command.push(path_to_jar_file)
+      @command.push(*(command_option_for_type + command_options))
+      @command.compact!
     end
 
     def command #:nodoc:
@@ -104,6 +109,10 @@ module YUI #:nodoc:
 
       def path_to_java
         options.delete(:java) || "java"
+      end
+
+      def java_opts
+        options.delete(:java_opts).to_s.split(/\s+/)
       end
 
       def path_to_jar_file
