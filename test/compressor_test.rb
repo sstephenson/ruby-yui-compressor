@@ -38,17 +38,18 @@ module YUI
 
     def test_js_java_opts_one_opt
       @compressor = YUI::JavaScriptCompressor.new(:java_opts => "-Xms64M")
-      assert_match(/^java -Xms64M/, @compressor.command)
+      assert_equal("-Xms64M", @compressor.command[1])
     end
 
     def test_css_java_opts_two_opts
       @compressor = YUI::CssCompressor.new(:java_opts => "-Xms64M -Xmx64M")
-      assert_match(/^java -Xms64M -Xmx64M/, @compressor.command)
+      assert_equal("-Xms64M", @compressor.command[1])
+      assert_equal("-Xmx64M", @compressor.command[2])
     end
 
     def test_js_java_opts_no_opts
       @compressor = YUI::JavaScriptCompressor.new()
-      assert_match(/^java -jar/, @compressor.command)
+      assert_equal("-jar", @compressor.command[1])
     end
 
     def test_compressor_should_raise_when_instantiated

@@ -1,5 +1,4 @@
-require "popen4"
-require "shellwords"
+require "childprocess"
 require "stringio"
 
 module YUI #:nodoc:
@@ -31,7 +30,7 @@ module YUI #:nodoc:
     end
 
     def command #:nodoc:
-      @command.map { |word| Shellwords.escape(word) }.join(" ")
+      @command
     end
 
     # Compress a stream or string of code with YUI Compressor. (A stream is
@@ -68,30 +67,40 @@ module YUI #:nodoc:
     #   end
     #
     def compress(stream_or_string)
+      # open pipes for stdout and stderr
+      rstdout, wstdout = IO.pipe
+      rstderr, wstderr = IO.pipe
+
+      process = ChildProcess.build(*command)
+      process.duplex = true
+      process.io.stdout = wstdout
+      process.io.stderr = wstderr
+      process.start
+      process.io.stdin.binmode
+
       streamify(stream_or_string) do |stream|
-        output = true
-        status = POpen4.popen4(command, "b") do |stdout, stderr, stdin, pid|
-          begin
-            stdin.binmode
-            transfer(stream, stdin)
-
-            if block_given?
-              yield stdout
-            else
-              output = stdout.read
-            end
-
-          rescue Exception => e
-            raise RuntimeError, "compression failed"
-          end
-        end
-
-        if status.exitstatus.zero?
-          output
-        else
-          raise RuntimeError, "compression failed"
-        end
+        transfer(stream, process.io.stdin)
       end
+
+      # wait for yuicompressor to finish
+      process.wait
+
+      # close the pipes
+      wstdout.close
+      wstderr.close
+
+      if process.exit_code == 0
+
+        if block_given?
+          yield rstdout
+        else
+          rstdout.read
+        end
+
+      else
+        raise RuntimeError, "compression failed\n%s" % rstderr.read
+      end
+
     end
 
     private
