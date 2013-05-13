@@ -1,6 +1,6 @@
-require "popen4"
-require "shellwords"
 require "stringio"
+require "shellwords"
+require "yui/interface"
 
 module YUI #:nodoc:
   class Compressor
@@ -28,6 +28,8 @@ module YUI #:nodoc:
       @command.push(path_to_jar_file)
       @command.push(*(command_option_for_type + command_options))
       @command.compact!
+
+      @interface = YUI::Interface.new
     end
 
     def command #:nodoc:
@@ -69,28 +71,15 @@ module YUI #:nodoc:
     #
     def compress(stream_or_string)
       streamify(stream_or_string) do |stream|
-        output = true
-        status = POpen4.popen4(command, "b") do |stdout, stderr, stdin, pid|
-          begin
-            stdin.binmode
-            transfer(stream, stdin)
+        @interface.compress(command, stream)
+      end
+    end
 
-            if block_given?
-              yield stdout
-            else
-              output = stdout.read
-            end
-
-          rescue Exception => e
-            raise RuntimeError, "compression failed"
-          end
-        end
-
-        if status.exitstatus.zero?
-          output
-        else
-          raise RuntimeError, "compression failed"
-        end
+    def streamify(stream_or_string)
+      if stream_or_string.respond_to?(:read)
+        yield stream_or_string
+      else
+        yield StringIO.new(stream_or_string.to_s)
       end
     end
 
@@ -117,22 +106,6 @@ module YUI #:nodoc:
 
       def path_to_jar_file
         options.delete(:jar_file) || File.join(File.dirname(__FILE__), *%w".. yuicompressor-2.4.7.jar")
-      end
-
-      def streamify(stream_or_string)
-        if stream_or_string.respond_to?(:read)
-          yield stream_or_string
-        else
-          yield StringIO.new(stream_or_string.to_s)
-        end
-      end
-
-      def transfer(from_stream, to_stream)
-        while buffer = from_stream.read(4096)
-          to_stream.write(buffer)
-        end
-        from_stream.close
-        to_stream.close
       end
 
       def command_option_for_type
