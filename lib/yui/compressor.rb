@@ -82,7 +82,7 @@ module YUI #:nodoc:
             end
 
           rescue Exception => e
-            raise RuntimeError, "compression failed"
+            raise RuntimeError, "compression failed (#{e})"
           end
         end
 
