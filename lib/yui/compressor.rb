@@ -4,7 +4,7 @@ require "stringio"
 
 module YUI #:nodoc:
   class Compressor
-    VERSION = "0.9.6"
+    VERSION = "0.10.0"
 
     class Error < StandardError; end
     class OptionError   < Error; end
