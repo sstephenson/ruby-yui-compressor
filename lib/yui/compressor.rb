@@ -33,7 +33,7 @@ module YUI #:nodoc:
 
     def command #:nodoc:
       if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
-        # Shllwords is only for bourne shells, so windows shells get this
+        # Shellwords is only for bourne shells, so windows shells get this
         # extremely remedial escaping
         escaped_cmd = @command.map do |word|
           if word =~ / /
@@ -87,11 +87,13 @@ module YUI #:nodoc:
         tempfile = Tempfile.new('yui_compress')
         tempfile.write stream.read
         tempfile.flush
+        full_command = "%s %s" % [command, tempfile.path]
 
         begin
-          output = `#{command} #{tempfile.path}`
-        rescue Exception
-          raise RuntimeError, "compression failed"
+          output = `#{full_command}`
+        rescue Exception => e
+          # windows shells tend to blow up here when the command fails
+          raise RuntimeError, "compression failed: %s" % e.message
         ensure
           tempfile.close!
         end
@@ -99,7 +101,10 @@ module YUI #:nodoc:
         if $?.exitstatus.zero?
           output
         else
-          raise RuntimeError, "compression failed"
+          # Bourne shells tend to blow up here when the command fails, usually
+          # because java is missing
+          raise RuntimeError, "Command '%s' returned non-zero exit status" %
+            full_command
         end
       end
     end
