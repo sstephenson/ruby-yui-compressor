@@ -1,6 +1,7 @@
 require "shellwords"
 require "stringio"
 require "tempfile"
+require "rbconfig"
 
 module YUI #:nodoc:
   class Compressor
@@ -31,7 +32,21 @@ module YUI #:nodoc:
     end
 
     def command #:nodoc:
-      @command.map { |word| Shellwords.escape(word) }.join(" ")
+      if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+        # Shllwords is only for bourne shells, so windows shells get this
+        # extremely remedial escaping
+        escaped_cmd = @command.map do |word|
+          if word =~ / /
+            word = "\"%s\"" % word
+          end
+
+          word
+        end
+      else
+        escaped_cmd = @command.map { |word| Shellwords.escape(word) }
+      end
+
+      escaped_cmd.join(" ")
     end
 
     # Compress a stream or string of code with YUI Compressor. (A stream is
