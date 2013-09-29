@@ -5,7 +5,7 @@ require "rbconfig"
 
 module YUI #:nodoc:
   class Compressor
-    VERSION = "0.11.0"
+    VERSION = "0.12.0"
 
     class Error < StandardError; end
     class OptionError   < Error; end
