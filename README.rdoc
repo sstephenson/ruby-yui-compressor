@@ -2,7 +2,7 @@
 
 Ruby-YUI Compressor provides a Ruby interface to the {YUI Compressor Java library}[http://developer.yahoo.com/yui/compressor/] for minifying JavaScript and CSS assets.
 
-<b>Latest version:</b> 0.11.0 (includes YUI Compressor 2.4.7)
+<b>Latest version:</b> 0.11.0 (includes YUI Compressor 2.4.8)
 
 * {API documentation}[http://yui.rubyforge.org/]
 * {Source code}[http://github.com/sstephenson/ruby-yui-compressor/]
@@ -58,7 +58,7 @@ By default, YUI::Compressor looks for Java as the +java+ command in your path, a
 
   YUI::JavaScriptCompressor.new(
     :java     => "/usr/bin/java",
-    :jar_file => "/path/to/my/yuicompressor-2.4.7.jar"
+    :jar_file => "/path/to/my/yuicompressor-2.4.8.jar"
   )
 
 ==== Additional compression options
