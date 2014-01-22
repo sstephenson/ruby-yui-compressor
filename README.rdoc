@@ -19,13 +19,6 @@ Ruby-YUI Compressor is distributed as a Ruby Gem (<tt>yui-compressor</tt>). Beca
   >> require "yui/compressor"
   => true
 
-You can also install Ruby-YUI Compressor with the {Rip package manager}[http://hellorip.com/]:
-
-  $ rip install git://github.com/sstephenson/ruby-yui-compressor.git 0.12.0
-  $ irb -rrip
-  >> require "yui/compressor"
-  => true
-
 === Using Ruby-YUI Compressor
 
 Create either a YUI::CssCompressor or a YUI::JavaScriptCompressor. Then pass an IO or string to the YUI::Compressor#compress method and get the compressed contents back as a string or have them yielded to a block.
