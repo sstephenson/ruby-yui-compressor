@@ -36,6 +36,19 @@ module YUI
 
     FIXTURE_ERROR_JS = "var x = {class: 'name'};"
 
+    def test_css_data_uri
+      data_uri_css = 'div { ' \
+        'background: white url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEU' \
+        'gAAABAAAAAQAQMAAAAlPW0iAAAABlBMVEUAAAD///+l2Z/dAAAAM0lEQVR4nGP4/5/h' \
+        '/1+G/58ZDrAz3D/McH8yw83NDDeNGe4Ug9C9zwz3gVLMDA/A6P9/AFGGFyjOXZtQAAA' \
+        'AAElFTkSuQmCC\') no-repeat scroll left top;}'
+
+      assert_nothing_raised do
+        compressor = YUI::CssCompressor.new
+        compressor.compress(data_uri_css)
+      end
+    end
+
     def test_js_java_opts_one_opt
       @compressor = YUI::JavaScriptCompressor.new(:java_opts => "-Xms64M")
       assert_match(/^java -Xms64M/, @compressor.command)
