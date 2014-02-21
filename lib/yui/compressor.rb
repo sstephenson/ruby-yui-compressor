@@ -32,7 +32,7 @@ module YUI #:nodoc:
     end
 
     def command #:nodoc:
-      if RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+      if windows?
         # Shellwords is only for bourne shells, so windows shells get this
         # extremely remedial escaping
         escaped_cmd = @command.map do |word|
@@ -152,6 +152,10 @@ module YUI #:nodoc:
 
       def command_option_for_line_break(line_break)
         line_break ? ["--line-break", line_break.to_s] : []
+      end
+
+      def windows?
+        RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
       end
   end
 
