@@ -123,7 +123,9 @@ module YUI #:nodoc:
       end
 
       def path_to_java
-        options.delete(:java) || "java"
+        (options.delete(:java) || "java").tap do |java_path|
+          raise RuntimeError, "Command \"#{java_path}\" is not installed" if linux? && `which #{java_path}`.chomp.empty?
+        end
       end
 
       def java_opts
@@ -156,6 +158,10 @@ module YUI #:nodoc:
 
       def windows?
         RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
+      end
+
+      def linux?
+        RbConfig::CONFIG['host_os'] =~ /linux(-gnu)?/
       end
   end
 

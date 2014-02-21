@@ -138,5 +138,12 @@ module YUI
         @compressor.compress(FIXTURE_ERROR_JS)
       end
     end
+
+    def test_compressor_should_fail_early_when_java_is_missing
+      error = assert_raise YUI::Compressor::RuntimeError do
+        YUI::JavaScriptCompressor.new(:java => '/path/to/nowhere')
+      end
+      assert_equal "Command \"/path/to/nowhere\" is not installed", error.message
+    end
   end
 end
