@@ -98,7 +98,7 @@ module YUI #:nodoc:
           tempfile.close!
         end
 
-        if $?.exitstatus.zero?
+        if $?.exitstatus && $?.exitstatus.zero?
           output
         else
           # Bourne shells tend to blow up here when the command fails, usually
