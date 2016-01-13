@@ -98,7 +98,9 @@ module YUI #:nodoc:
           tempfile.close!
         end
 
-        if $?.exitstatus.zero?
+        if $?.exitstatus.nil?
+          raise RuntimeError, "Command didn't execute: #{full_command}"
+        elsif $?.exitstatus.zero?
           output
         else
           # Bourne shells tend to blow up here when the command fails, usually
